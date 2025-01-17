@@ -35,7 +35,6 @@ class AuthController extends ResourceController
                 "id" => $userData["id"],
                 "username" => $userData["username"],
                 "email" => $userData["email"],
-                "role" => $userData["role"],
             ],
         ];
 
@@ -55,6 +54,11 @@ class AuthController extends ResourceController
             $data["password"],
             PASSWORD_BCRYPT
         );
+
+        // Set default user score if not provided
+        if (!isset($data["user_score"])) {
+            $data["user_score"] = 0;
+        }
 
         if ($this->userModel->insert($data)) {
             // Get the inserted user data
@@ -91,7 +95,6 @@ class AuthController extends ResourceController
                     "id" => $user["id"],
                     "username" => $user["username"],
                     "email" => $user["email"],
-                    "role" => $user["role"],
                 ],
             ]);
         } else {
