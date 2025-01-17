@@ -19,10 +19,10 @@ $routes->group("auth", function ($routes) {
 });
 
 $routes->group("user", function ($routes) {
-    $routes->get("score", "UserScoreController::getScore", [
+    $routes->get("score", "ScoreController::getScore", [
         "filter" => "auth",
     ]);
-    $routes->post("score/update", "UserScoreController::updateScore", [
+    $routes->post("score/update", "ScoreController::updateScore", [
         "filter" => "auth",
     ]);
 });

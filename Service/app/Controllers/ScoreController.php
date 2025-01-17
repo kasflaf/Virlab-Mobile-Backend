@@ -5,7 +5,7 @@ namespace App\Controllers;
 use App\Models\UserModel;
 use CodeIgniter\RESTful\ResourceController;
 
-class UserScoreController extends ResourceController
+class ScoreController extends ResourceController
 {
     protected $modelName = "App\Models\UserModel";
     protected $format = "json";
