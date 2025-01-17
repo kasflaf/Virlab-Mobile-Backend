@@ -1,0 +1,48 @@
+services:
+  php_virlab:
+    build:
+      dockerfile: Dockerfile
+    container_name: virlab_php
+    networks:
+      - ci4_network
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_DATABASE=${DB_DATABASE}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+    expose:
+      - "8080"
+    ports:
+      - "9000:8080"
+    command: >
+      bash -c "apt-get update &&
+      apt-get install -y libicu-dev &&
+      apt-get install -y libpq-dev &&
+      apt-get install -y git &&
+      docker-php-ext-install intl &&
+      docker-php-ext-install pgsql &&
+      curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer &&
+      composer require firebase/php-jwt &&
+      php spark migrate &&
+      php spark serve --host 0.0.0.0 --port 8080"
+
+  db_virlab:
+    image: postgres:13
+    container_name: virlab_db
+    environment:
+      POSTGRES_USER: ${DB_USERNAME} # Use the DB_USERNAME from .env
+      POSTGRES_PASSWORD: ${DB_PASSWORD} # Use the DB_PASSWORD from .env
+      POSTGRES_DB: ${DB_DATABASE} # Use the DB_DATABASE from .env
+    volumes:
+      - loan_data:/var/lib/postgresql/data
+    networks:
+      - ci4_network
+
+volumes:
+  virlab_data:
+
+networks:
+  virlab_network:
+    driver: bridge
