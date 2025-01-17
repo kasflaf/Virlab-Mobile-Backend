@@ -108,3 +108,43 @@ Backend code for Virlab Mobile
     }
   }
   ```
+
+  ### Leaderboard
+
+  - **URL:** `/leaderboard`
+  - **Method:** `GET`
+  - **Response:**
+    ```json
+    {
+      "status": 200,
+      "message": "Leaderboard retrieved successfully",
+      "data": [
+        {
+          "username": "user1",
+          "user_score": 1000
+        },
+        {
+          "username": "user2",
+          "user_score": 950
+        },
+        ...
+      ]
+    }
+    ```
+
+    If no users are found:
+    ```json
+    {
+      "status": 200,
+      "message": "No users found",
+      "data": []
+    }
+    ```
+
+    If an error occurs:
+    ```json
+    {
+      "status": 500,
+      "message": "An error occurred while retrieving leaderboard"
+    }
+    ```
