@@ -13,17 +13,13 @@ class ScoreController extends ResourceController
     // Method to get the score of a user by their ID
     public function getScore()
     {
-        $user = $this->request->user["id"];
-
-        if (!$user) {
-            return $this->failNotFound("User not found");
-        }
+        $userId = $this->request->user["id"];
 
         return $this->respond([
             "status" => 200,
             "message" => "User score retrieved successfully",
             "data" => [
-                "user_id" => $user["id"],
+                "user_id" => $userId,
                 "user_score" => $user["user_score"],
             ],
         ]);
