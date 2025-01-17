@@ -26,3 +26,5 @@ $routes->group("user", function ($routes) {
         "filter" => "auth",
     ]);
 });
+
+$routes->get("leaderboard", "ScoreController::leaderboard");

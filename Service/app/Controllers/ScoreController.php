@@ -38,7 +38,7 @@ class ScoreController extends ResourceController
 
         // Check if the input is valid JSON
         if (!$input) {
-            return $this->failValidationError("Invalid JSON input");
+            return $this->failValidationErrors("Invalid JSON input");
         }
 
         // Retrieve user ID from the request and new score from the JSON input
@@ -47,7 +47,7 @@ class ScoreController extends ResourceController
 
         // Validate new score
         if (!is_numeric($newScore)) {
-            return $this->failValidationError("Invalid score value");
+            return $this->failValidationErrors("Invalid score value");
         }
 
         // Find the user by ID
@@ -81,6 +81,40 @@ class ScoreController extends ResourceController
                 "Error updating user score: " . $e->getMessage()
             );
             return $this->fail("An error occurred while updating the score");
+        }
+    }
+
+    public function leaderboard()
+    {
+        try {
+            // Get top 10 users ordered by score
+            $topUsers = $this->model
+                ->select("username, user_score")
+                ->orderBy("user_score", "DESC")
+                ->limit(10)
+                ->find();
+
+            if (empty($topUsers)) {
+                return $this->respond([
+                    "status" => 200,
+                    "message" => "No users found",
+                    "data" => [],
+                ]);
+            }
+
+            return $this->respond([
+                "status" => 200,
+                "message" => "Leaderboard retrieved successfully",
+                "data" => $topUsers,
+            ]);
+        } catch (\Exception $e) {
+            log_message(
+                "error",
+                "Error retrieving leaderboard: " . $e->getMessage()
+            );
+            return $this->fail(
+                "An error occurred while retrieving leaderboard"
+            );
         }
     }
 }
