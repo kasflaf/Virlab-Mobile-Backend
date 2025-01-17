@@ -4,9 +4,8 @@ services:
     container_name: virlab_php
     volumes:
       - ./Service:/var/www/html:z # Bind mount your CI4 code to the container
-    user: "${UID}:${GID}"
     networks:
-      - ci4_network
+      - virlab_network
     environment:
       - DB_HOST=${DB_HOST}
       - DB_PORT=${DB_PORT}
@@ -38,9 +37,9 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD} # Use the DB_PASSWORD from .env
       POSTGRES_DB: ${DB_DATABASE} # Use the DB_DATABASE from .env
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - virlab_data:/var/lib/postgresql/data
     networks:
-      - ci4_network
+      - virlab_network
 
 volumes:
   virlab_data:
